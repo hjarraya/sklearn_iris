@@ -3,8 +3,8 @@
 # Declare variables to be passed into your templates.
 replicaCount: 1
 image:
-  repository: draft
-  tag: dev
+  repository: 10.0.239.136:5000/hjarraya-gmail-com/sklearn-iris
+  tag: 0.0.1
   pullPolicy: IfNotPresent
 service:
   name: sklearn-iris

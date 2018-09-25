@@ -1,0 +1,31 @@
+apiVersion: skaffold/v1alpha2
+kind: Config
+build:
+  tagPolicy:
+    envTemplate:
+      template: "{{.DOCKER_REGISTRY}}/hjarraya-gmail-com/sklearn-iris:{{.VERSION}}"
+  artifacts:
+  - imageName: changeme
+    workspace: .
+    docker: {}
+  local: {}
+deploy:
+  kubectl:
+    manifests:
+profiles:
+- name: dev
+  build:
+    tagPolicy:
+      envTemplate:
+        template: "{{.DOCKER_REGISTRY}}/hjarraya-gmail-com/sklearn-iris:{{.DIGEST_HEX}}"
+    artifacts:
+    - docker: {}
+    local: {}
+  deploy:
+    helm:
+      releases:
+      - name: sklearn-iris
+        chartPath: charts/sklearn-iris
+        setValueTemplates:
+          image.repository: "{{.DOCKER_REGISTRY}}/hjarraya-gmail-com/sklearn-iris"
+          image.tag: "{{.DIGEST_HEX}}"
